@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="admin-detail-page">
+        <div class="admin-detail-title">基本信息</div>
+        <table class="layui-table admin-detail-table">
+            <tbody>
+            <tr>
+                <th width='100px'>课程编号</th>
+                <td th:text="${course.id}"></td>
+                <th width='100px'>课程名</th>
+                <td th:text="${course.name}"></td>
+            </tr>
+            <tr>
+                <th>价格</th>
+                <td th:text="${course.price}"></td>
+                <th>状态</th>
+                <td th:text="${#dicts.dataStatus(course.status)}"></td>
+            </tr>
+            <tr>
+                <th>创建者</th>
+                <td th:text="${course.createName}"></td>
+                <th>创建时间</th>
+                <td th:text="${#dates.format(course.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+
+            <tr>
+                <th>更新者</th>
+                <td th:text="${course.updateName}"></td>
+                <th>更新时间</th>
+                <td th:text="${#dates.format(course.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+
+            <tr>
+                <th>备注</th>
+                <td colspan="4"><pre>[[${course.remark}]]</pre></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>

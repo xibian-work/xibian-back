@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .layui-upload-list {
+            text-align: center;
+            padding-left: 30px;
+            max-height: 240px;
+            max-width: 150px;
+        }
+        .headImage{
+            position: relative;
+            max-height: 240px;
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form admin-compile">
+    <form th:action="@{/business/picTemplate/save}">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">图片</label>
+            <div class="layui-input-inline uploadHeadImage">
+                <div class="layui-upload-drag" id="headImg" th:attr="data-url=@{/business/picTemplate/upload}">
+                    <i class="layui-icon"></i>
+                    <p>点击上传图片，或将图片拖拽到此处</p>
+                </div>
+
+
+            </div>
+
+            <div class="layui-input-inline layui-upload-list">
+                <!--图片预览-->
+                <img class="layui-upload-img headImage" th:src="@{'/business/picTemplate/picture'}" id="picShow">
+                <!--上传提示内容-->
+                <p id="tipText"></p>
+            </div>
+            <!--<div class="layui-input-inline">-->
+                <!---->
+            <!--</div>-->
+            <!--隐藏的input-->
+            <input type="hidden" id="imgUrl" name="picture" value=""/>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">标题</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="title"  placeholder="请输入标题">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">排序</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" type="text" name="sort"  placeholder="请输入排序">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea" name="remark"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item admin-finally" style="text-align: center">
+            <button class="layui-btn ajax-submit"><i class="fa fa-check-circle"></i> 保存</button>
+            <button class="layui-btn btn-secondary close-popup"><i class="fa fa-times-circle"></i> 关闭</button>
+        </div>
+    </form>
+</div>
+<script th:replace="/common/template :: script"></script>
+
+<script>
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+
+        //拖拽上传
+      var uploadInst = upload.render({
+            elem: '#headImg'
+            ,url: $('#headImg').data('url')
+            ,exts: 'jpg|png|gif|jpeg'
+            ,field: 'picture',
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#picShow').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                console.log(res)
+                //打印后台传回的地址: 把地址放入一个隐藏的input中, 和表单一起提交到后台, 此处略..
+                $('#picShow').attr('src', res.data.src);
+                $('#imgUrl').val(res.data.path);
+                var tipText = $('#tipText');
+                tipText.html('<span style="color: #009688;">上传成功!!!</span>');
+            }, error: function () {
+                //演示失败状态，并实现重传
+                var tipText = $('#tipText');
+                tipText.html('<span style="color: #ff1b31;">上传失败</span> <a class="layui-btn layui-btn-mini pic-reload">重试</a>');
+                tipText.find('.pic-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

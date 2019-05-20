@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/chenwt/Admin_fast">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .layui-upload-list dd {
+            position: relative;
+            margin: 0 10px 10px 0;
+            float: left
+        }
+
+        .layui-upload-list li {
+            position: relative;
+            margin: 0 10px 10px 0;
+            float: left;
+            width: 15%;
+            min-width: 305px;
+        }
+
+        .layui-upload-list .operation {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        .layui-upload-list .operation i {
+            cursor: pointer;
+            background: #2F4056;
+            padding: 2px;
+            line-height: 15px;
+            text-align: center;
+            color: #fff;
+            float: left;
+            filter: alpha(opacity=80);
+            -moz-opacity: .8;
+            -khtml-opacity: .8;
+            opacity: .8
+        }
+
+        .img-box {
+            position: relative;
+            text-align: center;
+            width: 250px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        .img {
+            max-height: 250px;
+            max-width: 250px;
+        }
+
+        .img-box .edit-img {
+            position: absolute;
+            left: 0px;
+            width: 250px;
+            height: 34px;
+            line-height: 34px;
+            color: #ffffff;
+            /*text-align: center;*/
+            background-color: rgba(0, 0, 0, 0.6);
+            transition: bottom 0.2s;
+            display: none
+        }
+
+        .img-box:hover .edit-img {
+            bottom: 0px;
+            display: inline-block;
+        }
+
+        .layui-btn-group {
+            position: relative;
+            top: 5px;
+        }
+
+    </style>
+
+</head>
+<body class="admin-layout-page">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-row admin-card-screen">
+            <div class="pull-left layui-form-pane admin-search-box">
+                <div class="layui-inline">
+                    <label class="layui-form-label">标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" th:value="${param.title}" placeholder="请输入标题" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn admin-search-btn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <ul class="layui-upload-list">
+                <li th:each="item:${list}">
+                    <div class="layui-card img-card">
+                        <div class="layui-card-header">
+                            [[${item.title}]]
+                        </div>
+                        <div class="layui-card-body" style="text-align: center">
+                            <div class="img-box">
+                                <img class="img" th:id="'img_'+${item.id}"
+                                     th:src="@{'/business/picTemplate/picture?p='+${item.picture}}"
+                                     th:alt="${item.picture}" th:title="${item.picture}">
+                                <span class="edit-img" th:id="'span_'+${item.id}"
+                                      th:onclick="Poster.picInfo([[${item.id}]])">图片详情</span>
+                            </div>
+
+                            <div class="layui-btn-group">
+                                <button class="layui-btn"
+                                        th:onclick="Poster.createPoster([[${item.id}]],[[${customerId}]],[[${item.picture}]])">
+                                    <!--th:href="@{'/business/customer/createPoster/'+${customerId}+${item.picture}}"-->
+                                    <i class="fa fa-qrcode"></i> 合成海报
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div th:replace="/common/fragment :: page"></div>
+        </div>
+    </div>
+</div>
+<script th:replace="/common/template :: script"></script>
+<script type="text/javascript" th:src="@{/js/plugins/jquery-3.3.1.min.js}"></script>
+<script>
+    /**
+     * 图片点击事件
+     * @param customerId
+     * @param picture
+     */
+    var Poster = {};
+
+    Poster.createPoster = function (index,customerId, picture) {
+        var url = Constants.ctxPath + "business/customer/createPoster";
+        var ajax = new $ax(url, function (data) {
+            //数据请求成功,base64展示
+            Poster.showPoster(index,data.data);
+        }, function (data) {
+            layer.msg("访问超时或请求错误，请刷新页面!", {icon: 5});
+        });
+        ajax.set("customerId", customerId);
+        ajax.set("picture", picture);
+        ajax.start();
+    }
+
+    Poster.showPoster = function (index,picture) {
+        var $ = layui.jquery;
+        var width = $("#img_" + index).width();
+        var height = $("#img_" + index).height();
+        var scaleWH = width / height;
+        var bigH = 600;
+        var bigW = scaleWH * bigH;
+        if (bigW > 900) {
+            bigW = 900;
+            bigH = bigW / scaleWH;
+        }
+
+        var result = $("#img_" + index).attr('src');
+        // 放大预览图片
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 1,
+            shadeClose: true,
+            area: [bigW + 'px', bigH + 'px'], //宽高
+            content: "<img width='" + bigW + "' height='" + bigH + "' src=" + picture + " />"
+        });
+    }
+
+    /**
+     * 图片点击事件
+     * @param id
+     */
+    Poster.picInfo = function(index) {
+        var $ = layui.jquery;
+        var width = $("#img_" + index).width();
+        var height = $("#img_" + index).height();
+        var scaleWH = width / height;
+        var bigH = 600;
+        var bigW = scaleWH * bigH;
+        if (bigW > 900) {
+            bigW = 900;
+            bigH = bigW / scaleWH;
+        }
+
+        var result = $("#img_" + index).attr('src');
+        // 放大预览图片
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 1,
+            shadeClose: true,
+            area: [bigW + 'px', bigH + 'px'], //宽高
+            content: "<img width='" + bigW + "' height='" + bigH + "' src=" + result + " />"
+        });
+    }
+</script>
+
+</body>
+</html>

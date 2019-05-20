@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/chenwt/Admin_fast">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+    <style>
+        .layui-upload-list dd {
+            position: relative;
+            margin: 0 10px 10px 0;
+            float: left
+        }
+
+        .layui-upload-list li {
+            position: relative;
+            margin: 0 10px 10px 0;
+            float: left;
+            width: 15%;
+            min-width: 305px;
+        }
+
+        .layui-upload-list .operation {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        .layui-upload-list .operation i {
+            cursor: pointer;
+            background: #2F4056;
+            padding: 2px;
+            line-height: 15px;
+            text-align: center;
+            color: #fff;
+            float: left;
+            filter: alpha(opacity=80);
+            -moz-opacity: .8;
+            -khtml-opacity: .8;
+            opacity: .8
+        }
+
+        .img-box {
+            position: relative;
+            text-align: center;
+            width: 250px;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        .img {
+            max-height: 250px;
+            max-width: 250px;
+        }
+
+        .img-box .edit-img {
+            position: absolute;
+            left: 0px;
+            width: 250px;
+            height: 34px;
+            line-height: 34px;
+            color: #ffffff;
+            /*text-align: center;*/
+            background-color: rgba(0, 0, 0, 0.6);
+            transition: bottom 0.2s;
+            display: none
+        }
+
+        .img-box:hover .edit-img {
+            bottom: 0px;
+            display: inline-block;
+        }
+
+        .pic-label {
+            width: 22%;
+        }
+
+        .pic-input {
+            width: 78%;
+        }
+    </style>
+
+</head>
+<body class="admin-layout-page">
+<div class="layui-card">
+    <div class="layui-card-header admin-card-header">
+        <span><i class="fa fa-bars"></i> 模板管理</span>
+        <i class="layui-icon layui-icon-refresh refresh-btn"></i>
+    </div>
+
+    <div class="layui-card-body">
+        <div class="layui-row admin-card-screen">
+            <div class="pull-left layui-form-pane admin-search-box">
+                <div class="layui-inline">
+                    <label class="layui-form-label">标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" th:value="${param.title}" placeholder="请输入标题" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn admin-search-btn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="pull-right screen-btn-group">
+                <button class="layui-btn open-popup" data-title="添加模板" th:attr="data-url=@{/business/picTemplate/add}"
+                        data-size="615,558">
+                    <i class="fa fa-plus"></i> 添加
+                </button>
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <ul class="layui-upload-list">
+                <li th:each="item:${list}">
+                    <div class="layui-card img-card">
+                        <div class="layui-card-header">
+                            [[${item.title}]]
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="img-box">
+                                <img class="img" th:id="'img_'+${item.id}"
+                                     th:src="@{'/business/picTemplate/picture?p='+${item.picture}}"
+                                     th:alt="${item.picture}" th:title="${item.picture}">
+                                <span class="edit-img" th:id="'span_'+${item.id}"
+                                      th:onclick="PicTemplate.picInfo([[${item.id}]])"
+                                      th:attr="data-url=@{/business/picTemplate/edit}">图片详情</span>
+                            </div>
+                            <form th:action="@{/business/picTemplate/save}" style="position: relative;top: 10px;"
+                                  class="layui-form layui-form-pane">
+                                <input type="hidden" name="id" th:value="${item.id}"/>
+                                <input type="hidden" name="picture" th:value="${item.picture}"/>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label pic-label">标题</label>
+                                    <div class="layui-input-block pic-input">
+                                        <input name="title" type="text" class="layui-input" placeholder="图片标题"
+                                               th:value="${item.title}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label pic-label">默认</label>
+                                    <div class="layui-input-block pic-input">
+                                        <input type="checkbox" name="isDefault" th:checked="${item.isDefault}" value="1"
+                                               lay-skin="switch" lay-text="是|否">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label pic-label">排序</label>
+                                    <div class="layui-input-block pic-input">
+                                        <input name="sort" type="text" class="layui-input" placeholder="图片排序"
+                                               th:value="${item.sort}">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-right" style="text-align:right;">
+                                    <div class="layui-btn-group">
+                                        <button class="layui-btn layui-btn-sm ajax-submit"><i class="layui-icon"></i>提交
+                                        </button>
+
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
+                                            <a class="ajax-get" th:attr="data-msg='您是否删除'+${item.title}" th:href="@{'/business/picTemplate/delete/'+${item.id}}">
+                                                <i class="layui-icon"></i>删除
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div th:replace="/common/fragment :: page"></div>
+        </div>
+
+    </div>
+
+</div>
+<script th:replace="/common/template :: script"></script>
+
+<script>
+
+    var PicTemplate = {};
+    /**
+     * 图片点击事件
+     * @param id
+     */
+    PicTemplate.picInfo = function(index) {
+        var $ = layui.jquery;
+        var width = $("#img_" + index).width();
+        var height = $("#img_" + index).height();
+        var scaleWH = width / height;
+        var bigH = 600;
+        var bigW = scaleWH * bigH;
+        if (bigW > 900) {
+            bigW = 900;
+            bigH = bigW / scaleWH;
+        }
+
+        var result = $("#img_" + index).attr('src');
+        // 放大预览图片
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 1,
+            shadeClose: true,
+            area: [bigW + 'px', bigH + 'px'], //宽高
+            content: "<img width='" + bigW + "' height='" + bigH + "' src=" + result + " />"
+        });
+    }
+</script>
+
+</body>
+</html>

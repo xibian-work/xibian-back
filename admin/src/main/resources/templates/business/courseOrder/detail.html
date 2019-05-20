@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+    <div class="admin-detail-page">
+        <div class="admin-detail-title">基本信息</div>
+        <table class="layui-table admin-detail-table">
+            <tbody>
+            <tr>
+                <th width='100px'>订单编号</th>
+                <td th:text="${courseOrder.id}"></td>
+                <th width='100px'>客户名</th>
+                <td th:text="${courseOrder.customerName}"></td>
+            </tr>
+            <tr>
+                <th>更新者</th>
+                <td th:text="${courseOrder.updateName}"></td>
+                <th>更新时间</th>
+                <td th:text="${#dates.format(courseOrder.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+
+            <tr>
+                <th>备注</th>
+                <td colspan="4"><pre>[[${courseOrder.remark}]]</pre></td>
+            </tr>
+
+            <tr>
+                <th>创建时间</th>
+                <td th:text="${#dates.format(courseOrder.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>
