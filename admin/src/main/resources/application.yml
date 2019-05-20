@@ -1,4 +1,4 @@
-### Admin-fast基础配置
+### xibian-back基础配置
 spring:
 ## thymeleaf模板设置
   thymeleaf:

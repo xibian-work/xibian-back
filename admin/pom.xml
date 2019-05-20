@@ -10,9 +10,15 @@
 
     <parent>
         <groupId>com.chenwt</groupId>
-        <artifactId>admin-fast</artifactId>
+        <artifactId>xibian-back</artifactId>
         <version>2.0.1</version>
     </parent>
+
+    <properties>
+        <docker.repository.url>registry.cn-shenzhen.aliyuncs.com</docker.repository.url>
+        <docker.repository.namespace>xibian-back</docker.repository.namespace>
+        <docker.repository.serverId>docker-aliyun</docker.repository.serverId>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -53,13 +59,121 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-        <finalName>Admin-fast-${project.version}</finalName>
-    </build>
+    <profiles>
+        <profile>
+            <id>study</id>
+            <build>
+                <finalName>${project.parent.artifactId}</finalName>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>1.1.1</version>
+                        <configuration>
+                            <forceTags>true</forceTags>
+                            <pushImage>true</pushImage>
+                            <buildArgs>
+                                <WAR_FILE>${project.basedir}/target/${project.build.finalName}.war</WAR_FILE>
+                            </buildArgs>
+
+                            <!-- docker远程服务地址 ，前提是docker服务器需开启远程访问-->
+                            <dockerHost>http://192.168.1.2:2375</dockerHost>
+                            <!-- 远程镜像名称 -->
+                            <imageName>${docker.repository.url}/chenwt/${docker.repository.namespace}:latest</imageName>
+                            <serverId>${docker.repository.serverId}</serverId>
+                            <registryUrl>${docker.repository.url}</registryUrl>
+                            <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <!--<directory>${project.build.directory}</directory>-->
+                                    <directory>${project.basedir}/target</directory>
+                                    <include>${project.build.finalName}.war</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <build>
+                <finalName>${project.parent.artifactId}</finalName>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>1.1.1</version>
+
+                        <!--将插件绑定在某个phase执行-->
+                        <executions>
+                            <execution>
+                                <id>build-image</id>
+                                <!--将插件绑定在package这个phase上。也就是说，用户只需执行mvn package ，就会自动执行mvn docker:build-->
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+
+                        <configuration>
+                            <forceTags>true</forceTags>
+                            <pushImage>true</pushImage>
+                            <buildArgs>
+                                <JAR_FILE >${project.basedir}/target/${project.build.finalName}.war</JAR_FILE >
+                            </buildArgs>
+
+                            <!-- docker远程服务地址 ，前提是docker服务器需开启远程访问-->
+                            <dockerHost>http://192.168.1.2:2375</dockerHost>
+                            <!-- 远程镜像名称 -->
+                            <imageName>${docker.repository.url}/chenwt/${docker.repository.namespace}</imageName>
+                            <!--指定标签-->
+                            <imageTags>
+                                <imageTag>latest</imageTag>
+                            </imageTags>
+                            <serverId>${docker.repository.serverId}</serverId>
+                            <registryUrl>${docker.repository.url}</registryUrl>
+                            <!-- 指定 Dockerfile 路径-->
+                            <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                            <!-- 这里是复制 jar 包到 docker 容器指定目录配置 -->
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <!--war 包所在的路径  此处配置的 即对应 target 目录-->
+                                    <directory>${project.basedir}/target</directory>
+                                    <include>${project.build.finalName}.war</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+
+                        <!--mvn clean package -Pprod 将插件docker build-->
+                        <!--<executions>-->
+                        <!--<execution>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                        <!--<goal>build</goal>-->
+                        <!--</goals>-->
+                        <!--</execution>-->
+                        <!--</executions>-->
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
 </project>
