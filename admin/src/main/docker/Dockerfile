@@ -12,6 +12,9 @@ RUN echo 'Asia/Shanghai' >/etc/timezone \
 ARG JAR_FILE
 # 复制war到镜像
 ADD ${JAR_FILE} /usr/local/tomcat/webapps/ROOT.war
+# COPY target/someproject-app.jar /app.jar
+
+VOLUME /xibian
 
 # 切换工作目录
 WORKDIR /usr/local/tomcat/webapps/

@@ -154,13 +154,10 @@
                                 </div>
                                 <div class="layui-form-item layui-right" style="text-align:right;">
                                     <div class="layui-btn-group">
-                                        <button class="layui-btn layui-btn-sm ajax-submit"><i class="layui-icon"></i>提交
-                                        </button>
+                                        <button class="layui-btn layui-btn-sm ajax-submit">提交</button>
 
-                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
-                                            <a class="ajax-get" th:attr="data-msg='您是否删除'+${item.title}" th:href="@{'/business/picTemplate/delete/'+${item.id}}">
-                                                <i class="layui-icon"></i>删除
-                                            </a>
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger ajax-get-button" th:attr="data-url=@{'/business/picTemplate/delete/'+${item.id}}">
+                                            删除
                                         </button>
                                     </div>
                                 </div>

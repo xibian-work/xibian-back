@@ -67,19 +67,14 @@ public class PicTemplateController {
      */
     @GetMapping("/picture")
     public void picture(String p, HttpServletResponse response) throws IOException {
-        String defaultPath = "/images/user-picture.jpg";
-        if (!(StringUtils.isEmpty(p) || p.equals(defaultPath))) {
-            File file = FileUpload.getFile(p);
+        if (!(StringUtils.isEmpty(p))){
+            File file = FileUpload.getStaticFile(p);
             if (file.exists()) {
                 FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
                 return;
             }
         }
-        ClassPathResource resource = new ClassPathResource("static" + defaultPath);
-        FileCopyUtils.copy(resource.getInputStream(), response.getOutputStream());
     }
-
-
 
     /**
      * 上传模板图片

@@ -258,7 +258,7 @@ public class UserController {
     public void picture(String p, HttpServletResponse response) throws IOException {
         String defaultPath = "/images/user-picture.jpg";
         if (!(StringUtils.isEmpty(p) || p.equals(defaultPath))) {
-            File file = FileUpload.getFile(p);
+            File file = FileUpload.getStaticFile(p);
             if (file.exists()) {
                 FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
                 return;

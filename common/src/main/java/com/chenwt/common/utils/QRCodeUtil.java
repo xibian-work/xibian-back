@@ -7,7 +7,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import lombok.Cleanup;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
@@ -31,6 +30,15 @@ import static java.awt.image.ImageObserver.WIDTH;
  * @description:
  */
 public class QRCodeUtil {
+    /**
+     * 二维码宽
+     */
+    private static final int CODE_WIDTH = 200;
+    /**
+     * 二维码高
+     */
+    private static final int CODE_HEIGHT = 200;
+
     /**
      * overlapImage
      * @description：合成二维码和图片为文件
@@ -106,9 +114,11 @@ public class QRCodeUtil {
             BufferedImage small = code;
             Graphics2D g = big.createGraphics();
 
-            //二维码或小图在大图的左上角坐标
-            int x = (big.getWidth() - small.getWidth()) / 2;
-            int y = (big.getHeight() - small.getHeight() - 100);
+            /**
+             * 二维码或小图在大图的左上角坐标
+             */
+            int x = (big.getWidth() - small.getWidth()) - 10;
+            int y = (big.getHeight() - small.getHeight()) - 10;
             g.drawImage(small, x, y, small.getWidth(), small.getHeight(), null);
             g.dispose();
             //为了保证大图背景不变色，formatName必须为"png"
@@ -145,7 +155,10 @@ public class QRCodeUtil {
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
         hints.put(EncodeHintType.MARGIN, 1);
         //200是定义的二维码或小图片的大小
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, 200, 200, hints);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, CODE_WIDTH, CODE_HEIGHT, hints);
+        //调用去除白边方法
+        bitMatrix = deleteWhite(bitMatrix);
+
         int width = bitMatrix.getWidth();
         int height = bitMatrix.getHeight();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -163,6 +176,28 @@ public class QRCodeUtil {
         // 插入logo
         insertImage(image, logoImgPath, needCompress);
         return image;
+    }
+
+    /**
+     * 去二维码白边
+     * @param matrix
+     * @return
+     */
+    private static BitMatrix deleteWhite(BitMatrix matrix) {
+        int[] rec = matrix.getEnclosingRectangle();
+        int resWidth = rec[2] + 1;
+        int resHeight = rec[3] + 1;
+
+        BitMatrix resMatrix = new BitMatrix(resWidth, resHeight);
+        resMatrix.clear();
+        for (int i = 0; i < resWidth; i++) {
+            for (int j = 0; j < resHeight; j++) {
+                if (matrix.get(i + rec[0], j + rec[1])){
+                    resMatrix.set(i, j);
+                }
+            }
+        }
+        return resMatrix;
     }
 
     /**
@@ -215,8 +250,8 @@ public class QRCodeUtil {
 
     public static final void main(String[] args) throws IOException, WriterException {
         BufferedImage code = createImage("https://gitee.com/chenwt", null, false);
-        combineCodeAndPicToFile("C:/Users/chenwt/Pictures/我的图片.jpg", code);
-        String str =  combineCodeAndPicToBase64("C:/Users/chenwt/Pictures/广东企业真实性核验单.png", code);
+//      combineCodeAndPicToFile("E:/111.jpg", code);
+        String str =  combineCodeAndPicToBase64("E:/111.jpg", code);
         System.out.println(1111);
     }
 }

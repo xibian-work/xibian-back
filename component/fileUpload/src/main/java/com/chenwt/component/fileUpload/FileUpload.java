@@ -65,6 +65,14 @@ public class FileUpload {
     }
 
     /**
+     * 获取文件上传保存路径
+     */
+    public static String getStaticUploadPath(){
+        UploadProjectProperties properties = SpringContextUtil.getBean(UploadProjectProperties.class);
+        return properties.getStaticPath();
+    }
+
+    /**
      * 获取文件上传目录的静态资源路径
      */
     public static String getPathPattern(){
@@ -96,7 +104,8 @@ public class FileUpload {
 
         // 创建保存文件对象
         String path = upload.getPath().replace(getPathPattern(), "");
-        String filePath = getUploadPath() + path;
+//        String filePath = getUploadPath() + path;
+        String filePath = getStaticUploadPath() + path;
         File dest = new File(filePath.replace("//", "/"));
         if(!dest.exists()){
             dest.getParentFile().mkdirs();
@@ -173,6 +182,16 @@ public class FileUpload {
         String spPath = properties.getStaticPath().replace("*", "");
         String s = fuPath + picture.replace(spPath, "");
         return fuPath + picture.replace(spPath, "");
+    }
+
+
+    /**
+     * 获取picture对应的File
+     * @param picture
+     * @return
+     */
+    public static File getStaticFile(String picture) {
+        return new File(picture);
     }
 
 }

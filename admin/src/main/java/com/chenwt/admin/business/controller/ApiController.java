@@ -6,7 +6,9 @@ import com.chenwt.common.utils.ResultVoUtil;
 import com.chenwt.common.vo.ResultVo;
 import com.chenwt.component.actionLog.annotation.EntityParam;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping("/business/api")
+@CrossOrigin(origins = "*")
 public class ApiController {
     @Resource
     private CustomerService customerService;
@@ -31,9 +34,9 @@ public class ApiController {
     @ResponseBody
     public ResultVo sign(@EntityParam RignVO rignVO) {
         // 更新状态
-        return ResultVoUtil.success("领课成功！");
-//        ResultVo resultVo = customerService.sign(rignVO);
-//        return resultVo;
+//        return ResultVoUtil.success("领课成功！");
+        ResultVo resultVo = customerService.sign(rignVO);
+        return resultVo;
     }
 
 }

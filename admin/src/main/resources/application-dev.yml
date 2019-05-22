@@ -4,7 +4,7 @@ server:
   servlet:
     context-path: /admin
 
-### dev项目配置
+### study项目配置
 project:
   captcha-open: false                         #是否开启登录验证码
   shiro:
@@ -12,18 +12,19 @@ project:
     global-session-timeout: 1800              #Session会话超时时间，默认30分钟（秒）
   upload:
     #file-path:                               #文件上传路径，默认在项目根目录upload下
-    static-path: /upload/**                   #上传文件静态访问路径
+    static-path:  E:/Data/upload              #上传文件静态访问路径
+  ke-url: http://ke.51yujianni.com
 
 ### spring配置
 spring:
-## 数据库配置
+  ## 数据库配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://183.6.131.226:3406/timo?useSSL=false&characterEncoding=utf-8
+    url: jdbc:mysql://183.6.131.226:3406/study?useSSL=false&characterEncoding=utf-8
     username: root
     password: zkzjzkzj*
 
-## jpa配置
+  ## jpa配置
   jpa:
     show-sql: true
     hibernate:
@@ -32,3 +33,4 @@ spring:
       hibernate.dialect: com.chenwt.common.mysql.MySQLDialectUTF8
       hibernate.format_sql: false
     open-in-view: true
+

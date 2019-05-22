@@ -323,6 +323,42 @@ layui.use(['element', 'form', 'layer', 'upload'], function () {
         $("[data-field='"+ field +"']").addClass(isAsc);
     }
 
+    //post方式异步-按钮button操作状态
+    $(document).on("click", ".ajax-post-button", function () {
+        var checked = [];
+        var url = $(this).attr("data-url");
+
+        //全部操作
+        if ($(this).hasClass("all-param")) {
+            $.post(url, function (result) {
+                $.fn.Messager(result);
+            });
+            return;
+        }
+
+        var tdcheckbox = $(".admin-table td .admin-checkbox :checkbox:checked");
+        if (tdcheckbox.length > 0) {
+            tdcheckbox.each(function (key, val) {
+                checked.push("ids=" + $(val).attr("value"));
+            });
+            $.post(url, checked.join("&"), function (result) {
+                $.fn.Messager(result);
+            });
+        } else {
+            layer.msg('请选择一条记录');
+        }
+    });
+
+
+    //get方式异步-按钮button操作状态
+    $(".ajax-get-button").on("click", function (e) {
+        e.preventDefault();
+        var url = $(this).attr("data-url");
+        $.get(url, function (result) {
+            $.fn.Messager(result);
+        });
+    });
+
     /** 上传图片操作 */
     upload.render({
         elem: '.upload-image' //绑定元素

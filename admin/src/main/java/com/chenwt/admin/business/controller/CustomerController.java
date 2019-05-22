@@ -19,6 +19,7 @@ import com.chenwt.component.excel.ExcelUtil;
 import com.chenwt.component.fileUpload.FileUpload;
 import com.chenwt.component.shiro.ShiroUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +45,10 @@ public class CustomerController implements Serializable {
 
     @Resource
     private PicTemplateService picTemplateService;
+
+    @Value("${project.ke-url}")
+    private String keUrl;
+
 
     /**
      * 列表页面
@@ -233,12 +238,11 @@ public class CustomerController implements Serializable {
     @RequestMapping("/createPoster")
     @RequiresPermissions("business:customer:toPoster")
     @ResponseBody
-    public ResultVo updateStatus(@RequestParam("customerId") Long customerId, @RequestParam("picture") String picture, HttpServletResponse resp) {
+    public ResultVo createPoster(@RequestParam("customerId") Long customerId, @RequestParam("picture") String picture) {
         try {
-            //生成二维码
-            BufferedImage code = QRCodeUtil.createImage("https://gitee.com/chenwt?customerId="+customerId, null, false);
+            //生成二维码"http://ke.51yujianni.com?customerId="
+            BufferedImage code = QRCodeUtil.createImage(keUrl+"?customerId="+customerId, null, false);
             //合成二维码和图片为输出流，直接展示
-            picture = FileUpload.getFilePath(picture);
             String picBase64 = QRCodeUtil.combineCodeAndPicToBase64(picture,code);
             ResultVo resultVo = ResultVoUtil.success();
             resultVo.setData(picBase64);

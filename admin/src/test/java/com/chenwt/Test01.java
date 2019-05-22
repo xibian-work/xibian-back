@@ -1,15 +1,7 @@
 package com.chenwt;
 
-import com.chenwt.admin.business.domain.entity.Customer;
-import com.chenwt.admin.business.repository.CustomerRepository;
-import com.chenwt.common.data.PageSort;
-import com.chenwt.modules.system.service.RoleService;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @class：Test01
@@ -19,15 +11,12 @@ import java.util.List;
  * @description:
  */
 public class Test01 extends BaseTest {
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private CustomerRepository customerRepository;
+    @Value("${project.ke-url}")
+    private String keUrl;
 
     @Test
     public void test01(){
         // 创建分页对象
-        Pageable page = PageSort.pageRequest(Sort.Direction.ASC);
+        System.out.println(keUrl+"?customerId=");
     }
 }

@@ -23,6 +23,10 @@ public class UploadProjectProperties {
      */
     private String staticPath = "/upload/**";
 
+    /**
+     * 项目路径
+     * @return
+     */
     public String getFilePath() {
         if(filePath == null){
             return ToolUtil.getProjectPath() + "/upload/";
