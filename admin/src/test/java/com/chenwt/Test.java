@@ -2,7 +2,6 @@ package com.chenwt;
 
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @class：Test
@@ -26,7 +25,6 @@ public class Test {
 //        Map jsonObjectMap = JacksonUtils.jsonToBean(appClientInfo,Map.class);
 //
 //        Integer type = (Integer) jsonObjectMap.get("type");
-
         System.out.println(1111);
     }
 }

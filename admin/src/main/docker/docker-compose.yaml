@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  mysql:
+    container_name: xibian-mysql
+    image: registry.cn-shenzhen.aliyuncs.com/chenwt/xibian-mysql:1.0
+    volumes:
+      - /data/docker/xibian-back/mysql:/var/lib/mysql
+    restart: always
+    # ports:
+    # - 3306:3306
+
+  xibian-back:
+    container_name: xibian-back
+    image: registry.cn-shenzhen.aliyuncs.com/chenwt/xibian-back:1.0
+    volumes:
+      - /data/docker/xibian-back/data:/xibian
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
