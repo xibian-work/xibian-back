@@ -3,18 +3,20 @@ version: '3.3'
 services:
   mysql:
     container_name: xibian-mysql
-    image: registry.cn-shenzhen.aliyuncs.com/chenwt/xibian-mysql:1.0
+    image: registry.cn-shenzhen.aliyuncs.com/chenwt/xibian-mysql:2.0
+    privileged: true
     volumes:
-      - /data/docker/xibian-back/mysql:/var/lib/mysql
+      - /data/docker/xibian-back/mysql/data:/var/lib/mysql
+      - /data/docker/xibian-back/mysql/conf/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
     restart: always
     # ports:
-    # - 3306:3306
+    #  - 3306:3306
 
   xibian-back:
     container_name: xibian-back
-    image: registry.cn-shenzhen.aliyuncs.com/chenwt/xibian-back:1.0
+    image: registry.cn-shenzhen.aliyuncs.com/chenwt/xibian-back:2.0
     volumes:
-      - /data/docker/xibian-back/data:/xibian
+      - /data/docker/xibian-back/upload:/xibian
     restart: always
     ports:
       - 8080:8080
