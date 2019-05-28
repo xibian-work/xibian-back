@@ -11,6 +11,11 @@ public enum  ConstantEnums {
     PIC_TEMPLATE_DEFAULT_0(0, "非默认"),
     PIC_TEMPLATE_DEFAULT_1(1, "默认"),
 
+    STATUS_1(1, "正常"),
+    STATUS_2(2, "冻结"),
+    STATUS_3(3, "删除"),
+
+
     /**
      * 客户营销类型
      */

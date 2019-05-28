@@ -11,6 +11,7 @@ import com.chenwt.admin.business.service.CustomerMarketingService;
 import com.chenwt.admin.business.service.CustomerService;
 import com.chenwt.admin.business.service.CustomerTeamService;
 import com.chenwt.admin.business.service.StudentService;
+import com.chenwt.common.constant.StatusConst;
 import com.chenwt.common.data.PageSort;
 import com.chenwt.common.enums.StatusEnum;
 import com.chenwt.common.utils.ResultVoUtil;
@@ -102,6 +103,7 @@ public class CustomerServiceImpl implements CustomerService {
             customer = new Customer();
             customer.setPhone(rignVO.getPhone());
             customer.setCreateDate(new Date());
+            customer.setStatus(StatusConst.OK);
             save(customer);
 
             //该手机号为新用户，海报推广用户
