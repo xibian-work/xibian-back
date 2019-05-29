@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class RignVO implements Serializable {
+public class SignVO implements Serializable {
     private Long customerId;
     private String phone;
     private String studentName;

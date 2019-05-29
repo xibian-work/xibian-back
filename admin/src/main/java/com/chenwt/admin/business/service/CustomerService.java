@@ -2,7 +2,7 @@ package com.chenwt.admin.business.service;
 
 import com.chenwt.admin.business.domain.entity.Customer;
 import com.chenwt.admin.business.domain.projection.CustomerProjection;
-import com.chenwt.admin.business.domain.vo.RignVO;
+import com.chenwt.admin.business.domain.vo.SignVO;
 import com.chenwt.common.enums.StatusEnum;
 import com.chenwt.common.vo.ResultVo;
 import org.springframework.data.domain.Page;
@@ -83,9 +83,9 @@ public interface CustomerService {
 
     /**
      * 领课推广
-     * @param rignVO
+     * @param signVO
      * @return
      */
     @Transactional
-    ResultVo sign(RignVO rignVO);
+    ResultVo sign(SignVO signVO);
 }

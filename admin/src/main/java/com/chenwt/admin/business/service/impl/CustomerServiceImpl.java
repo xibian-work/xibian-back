@@ -4,7 +4,7 @@ import com.chenwt.admin.business.domain.entity.Customer;
 import com.chenwt.admin.business.domain.entity.CustomerMarketing;
 import com.chenwt.admin.business.domain.entity.CustomerTeam;
 import com.chenwt.admin.business.domain.projection.CustomerProjection;
-import com.chenwt.admin.business.domain.vo.RignVO;
+import com.chenwt.admin.business.domain.vo.SignVO;
 import com.chenwt.admin.business.enums.ConstantEnums;
 import com.chenwt.admin.business.repository.CustomerRepository;
 import com.chenwt.admin.business.service.CustomerMarketingService;
@@ -94,22 +94,22 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResultVo sign(RignVO rignVO) {
+    public ResultVo sign(SignVO signVO) {
         ResultVo resultVo = ResultVoUtil.success("领课成功");
 
-        Customer customer = findByPhone(rignVO.getPhone());
+        Customer customer = findByPhone(signVO.getPhone());
         if (null == customer){
             customer = new Customer();
-            customer.setPhone(rignVO.getPhone());
+            customer.setPhone(signVO.getPhone());
             customer.setCreateDate(new Date());
             save(customer);
 
             //该手机号为新用户，海报推广用户
-            if (null != rignVO.getCustomerId()){
+            if (null != signVO.getCustomerId()){
                 /**
                  * 建立团队关系
                  */
-                Customer leaderCustomer = customerRepository.findById(rignVO.getCustomerId()).orElse(null);
+                Customer leaderCustomer = customerRepository.findById(signVO.getCustomerId()).orElse(null);
                 if (null != leaderCustomer){
                     CustomerTeam customerTeam = new CustomerTeam();
                     customerTeam.setLeaderId(leaderCustomer.getId());
@@ -119,7 +119,7 @@ public class CustomerServiceImpl implements CustomerService {
                 }
             }
             //保存学生信息
-            studentService.saveStudent(rignVO.getStudentName(), customer.getId());
+            studentService.saveStudent(signVO.getStudentName(), customer.getId());
         }
 
         CustomerMarketing customerMarketing = customerMarketingService.findByCustomerIdAndType(customer.getId(), ConstantEnums.CUSTOMER_MARKETING_1.getKey());
