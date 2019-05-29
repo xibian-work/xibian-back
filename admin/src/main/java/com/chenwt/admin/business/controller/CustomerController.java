@@ -49,7 +49,6 @@ public class CustomerController implements Serializable {
     @Value("${project.ke-url}")
     private String keUrl;
 
-
     /**
      * 列表页面
      */
@@ -96,36 +95,36 @@ public class CustomerController implements Serializable {
         return "/business/customer/pwd";
     }
 
-    /**
-     * 修改密码
-     */
-    @PostMapping("/pwd")
-    @RequiresPermissions("business:customer:pwd")
-    @ResponseBody
-    public ResultVo editPassword(String password, String confirm,@RequestParam(value = "ids", required = false) List<Customer> customerList) {
-        // 判断密码是否为空
-        if (password.isEmpty() || "".equals(password.trim())) {
-            throw new ResultException(ResultEnum.USER_PWD_NULL);
-        }
-
-        // 判断两次密码是否一致
-        if (!password.equals(confirm)) {
-            throw new ResultException(ResultEnum.USER_INEQUALITY);
-        }
-
-        // 修改密码，对密码进行加密
-        customerList.forEach(customer -> {
-            String salt = ShiroUtil.getRandomSalt();
-            String encrypt = ShiroUtil.encrypt(password, salt);
-            customer.setPassword(encrypt);
-            customer.setSalt(salt);
-            customer.setUpdateDate(new Date());
-        });
-
-        // 保存数据
-        customerService.save(customerList);
-        return ResultVoUtil.success("修改成功");
-    }
+//    /**
+//     * 修改密码
+//     */
+//    @PostMapping("/pwd")
+//    @RequiresPermissions("business:customer:pwd")
+//    @ResponseBody
+//    public ResultVo editPassword(String password, String confirm,@RequestParam(value = "ids", required = false) List<Customer> customerList) {
+//        // 判断密码是否为空
+//        if (password.isEmpty() || "".equals(password.trim())) {
+//            throw new ResultException(ResultEnum.USER_PWD_NULL);
+//        }
+//
+//        // 判断两次密码是否一致
+//        if (!password.equals(confirm)) {
+//            throw new ResultException(ResultEnum.USER_INEQUALITY);
+//        }
+//
+//        // 修改密码，对密码进行加密
+//        customerList.forEach(customer -> {
+//            String salt = ShiroUtil.getRandomSalt();
+//            String encrypt = ShiroUtil.encrypt(password, salt);
+//            customer.setPassword(encrypt);
+//            customer.setSalt(salt);
+//            customer.setUpdateDate(new Date());
+//        });
+//
+//        // 保存数据
+//        customerService.save(customerList);
+//        return ResultVoUtil.success("修改成功");
+//    }
 
     /**
      * 跳转到添加页面
@@ -158,15 +157,15 @@ public class CustomerController implements Serializable {
         // 验证数据是否合格
         if (customer.getId() == null) {
 
-            // 判断密码是否为空
-            if (customer.getPassword().isEmpty() || "".equals(customer.getPassword().trim())) {
-                throw new ResultException(ResultEnum.USER_PWD_NULL);
-            }
-
-            // 判断两次密码是否一致
-            if (!customer.getPassword().equals(valid.getConfirm())) {
-                throw new ResultException(ResultEnum.USER_INEQUALITY);
-            }
+//            // 判断密码是否为空
+//            if (customer.getPassword().isEmpty() || "".equals(customer.getPassword().trim())) {
+//                throw new ResultException(ResultEnum.USER_PWD_NULL);
+//            }
+//
+//            // 判断两次密码是否一致
+//            if (!customer.getPassword().equals(valid.getConfirm())) {
+//                throw new ResultException(ResultEnum.USER_INEQUALITY);
+//            }
 
             customer.setStatus(StatusConst.OK);
             customer.setCreateDate(new Date());
