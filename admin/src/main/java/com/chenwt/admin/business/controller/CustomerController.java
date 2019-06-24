@@ -171,10 +171,10 @@ public class CustomerController implements Serializable {
             customer.setCreateDate(new Date());
 
             // 对密码进行加密
-            String salt = ShiroUtil.getRandomSalt();
-            String encrypt = ShiroUtil.encrypt(customer.getPassword(), salt);
-            customer.setPassword(encrypt);
-            customer.setSalt(salt);
+//            String salt = ShiroUtil.getRandomSalt();
+//            String encrypt = ShiroUtil.encrypt(customer.getPassword(), salt);
+//            customer.setPassword(encrypt);
+//            customer.setSalt(salt);
         }
 
         // 判断用户名是否重复

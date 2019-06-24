@@ -20,7 +20,7 @@ spring:
   ## 数据库配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://183.6.131.226:3406/study?useSSL=false&characterEncoding=utf-8
+    url: jdbc:mysql://183.6.131.226:3406/study?useSSL=false&characterEncoding=utf-8&autoReconnect=true
     username: root
     password: zkzjzkzj*
 

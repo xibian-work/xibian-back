@@ -7,8 +7,8 @@ package com.chenwt.common.exception.interfaces;
  */
 public interface ResultInterface {
 
-    public Integer getCode();
+    Integer getCode();
 
-    public String getMessage();
+    String getMessage();
 
 }
