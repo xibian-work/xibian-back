@@ -47,10 +47,10 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerMarketingService customerMarketingService;
 
     @Override
-    public Page<CustomerProjection> getPageList(Byte status, String customerName){
+    public Page<CustomerProjection> getPageList(Byte status, String username){
         // 创建分页对象
         Pageable page = PageSort.nativePageRequest(Sort.Direction.ASC);
-        return customerRepository.getPageList(status, customerName,page);
+        return customerRepository.getPageList(status, username,page);
     }
 
     @Override
@@ -137,6 +137,16 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return resultVo;
+    }
+
+    @Override
+    public void payMoney(Long customerId, Double money) {
+        //todo
+        //查找其推荐人
+
+        //如果有推荐人，则按照奖励规则给予奖励
+
+        //插入一条充值订单
     }
 
 }

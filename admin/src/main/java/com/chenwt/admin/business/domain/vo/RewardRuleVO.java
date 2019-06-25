@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class CustomerVO implements Serializable {
-    private String username;
+public class RewardRuleVO implements Serializable {
+    private String rewardRuleName;
     private Byte status;
 }

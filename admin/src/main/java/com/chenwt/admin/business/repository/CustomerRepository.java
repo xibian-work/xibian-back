@@ -19,7 +19,7 @@ public interface CustomerRepository extends BaseRepository<Customer, Long>, JpaS
     /**
      * 分页查询
      * @param status
-     * @param customerName
+     * @param username
      * @param page
      * @return
      */
@@ -32,8 +32,8 @@ public interface CustomerRepository extends BaseRepository<Customer, Long>, JpaS
             "c.STATUS  FROM customer c " +
             "where c.status != 3 " +
             "and if(:status is NULL,1=1,c.status = :status) " +
-            "and if(:customerName is NULL,1=1,c.username LIKE CONCAT('%', :customerName,'%')) ",nativeQuery = true)
-    Page<CustomerProjection> getPageList(@Param("status") Byte status, @Param("customerName") String customerName, Pageable page);
+            "and if(:username is NULL,1=1,c.username LIKE CONCAT('%', :username,'%')) ",nativeQuery = true)
+    Page<CustomerProjection> getPageList(@Param("status") Byte status, @Param("username") String username, Pageable page);
 
     /**
      * 分页查询

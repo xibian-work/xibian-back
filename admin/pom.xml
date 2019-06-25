@@ -70,44 +70,44 @@
                 <activatedProperties>dev</activatedProperties>
             </properties>
 
-            <build>
-                <finalName>${project.parent.artifactId}</finalName>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                    </plugin>
+            <!--<build>-->
+                <!--<finalName>${project.parent.artifactId}</finalName>-->
+                <!--<plugins>-->
+                    <!--<plugin>-->
+                        <!--<groupId>org.springframework.boot</groupId>-->
+                        <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+                    <!--</plugin>-->
 
-                    <plugin>
-                        <groupId>com.spotify</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>1.1.1</version>
-                        <configuration>
-                            <forceTags>true</forceTags>
-                            <pushImage>true</pushImage>
-                            <buildArgs>
-                                <WAR_FILE>${project.basedir}/target/${project.build.finalName}.war</WAR_FILE>
-                            </buildArgs>
+                    <!--<plugin>-->
+                        <!--<groupId>com.spotify</groupId>-->
+                        <!--<artifactId>docker-maven-plugin</artifactId>-->
+                        <!--<version>1.1.1</version>-->
+                        <!--<configuration>-->
+                            <!--<forceTags>true</forceTags>-->
+                            <!--<pushImage>true</pushImage>-->
+                            <!--<buildArgs>-->
+                                <!--<WAR_FILE>${project.basedir}/target/${project.build.finalName}.war</WAR_FILE>-->
+                            <!--</buildArgs>-->
 
-                            <!-- docker远程服务地址 ，前提是docker服务器需开启远程访问-->
-                            <dockerHost>http://192.168.1.2:2375</dockerHost>
-                            <!-- 远程镜像名称 -->
-                            <imageName>${docker.repository.url}/chenwt/${docker.repository.namespace}:latest</imageName>
-                            <serverId>${docker.repository.serverId}</serverId>
-                            <registryUrl>${docker.repository.url}</registryUrl>
-                            <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-                            <resources>
-                                <resource>
-                                    <targetPath>/</targetPath>
-                                    <directory>${project.build.directory}</directory>
-                                    <!--<directory>${project.basedir}/target</directory>-->
-                                    <include>${project.build.finalName}.war</include>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
+                            <!--&lt;!&ndash; docker远程服务地址 ，前提是docker服务器需开启远程访问&ndash;&gt;-->
+                            <!--<dockerHost>http://192.168.1.2:2375</dockerHost>-->
+                            <!--&lt;!&ndash; 远程镜像名称 &ndash;&gt;-->
+                            <!--<imageName>${docker.repository.url}/chenwt/${docker.repository.namespace}:latest</imageName>-->
+                            <!--<serverId>${docker.repository.serverId}</serverId>-->
+                            <!--<registryUrl>${docker.repository.url}</registryUrl>-->
+                            <!--<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>-->
+                            <!--<resources>-->
+                                <!--<resource>-->
+                                    <!--<targetPath>/</targetPath>-->
+                                    <!--<directory>${project.build.directory}</directory>-->
+                                    <!--&lt;!&ndash;<directory>${project.basedir}/target</directory>&ndash;&gt;-->
+                                    <!--<include>${project.build.finalName}.war</include>-->
+                                <!--</resource>-->
+                            <!--</resources>-->
+                        <!--</configuration>-->
+                    <!--</plugin>-->
+                <!--</plugins>-->
+            <!--</build>-->
         </profile>
         <profile>
             <id>prod</id>

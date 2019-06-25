@@ -3,10 +3,12 @@ package com.chenwt.admin.business.controller;
 import com.chenwt.admin.business.domain.entity.Customer;
 import com.chenwt.admin.business.domain.entity.PicTemplate;
 import com.chenwt.admin.business.domain.projection.CustomerProjection;
+import com.chenwt.admin.business.domain.vo.CustomerMoneyVO;
 import com.chenwt.admin.business.domain.vo.CustomerVO;
 import com.chenwt.admin.business.domain.vo.PicTemplateVO;
 import com.chenwt.admin.business.service.CustomerService;
 import com.chenwt.admin.business.service.PicTemplateService;
+import com.chenwt.admin.business.validator.CustomerMoneyValid;
 import com.chenwt.admin.business.validator.CustomerValid;
 import com.chenwt.common.constant.StatusConst;
 import com.chenwt.common.enums.ResultEnum;
@@ -56,7 +58,7 @@ public class CustomerController implements Serializable {
     @RequiresPermissions("business:customer:index")
     public String index(Model model, CustomerVO customerVO) {
         // 获取订单列表
-        Page<CustomerProjection> list = customerService.getPageList(customerVO.getStatus(),customerVO.getCustomerName());
+        Page<CustomerProjection> list = customerService.getPageList(customerVO.getStatus(),customerVO.getUsername());
 
         // 封装数据
         model.addAttribute("list", list.getContent());
@@ -215,7 +217,7 @@ public class CustomerController implements Serializable {
     }
 
     /**
-     * 跳转到添加页面
+     * 跳转到推广二维码页面
      */
     @GetMapping("/toPoster")
     @RequiresPermissions("business:customer:toPoster")
@@ -230,6 +232,25 @@ public class CustomerController implements Serializable {
         return "/business/customer/poster";
     }
 
+    /**
+     * 跳转到充值页面
+     */
+    @GetMapping("/toMoney")
+    @RequiresPermissions("business:customer:toMoney")
+    public String toMoney(Model model, @RequestParam(value = "ids") Long customerId) {
+        model.addAttribute("customerId", customerId);
+        return "/business/customer/money";
+    }
+
+    /**
+     * 跳转到我的团队页面
+     */
+    @GetMapping("/toTeam")
+    @RequiresPermissions("business:customer:toTeam")
+    public String toTeam(Model model, @RequestParam(value = "ids") Long customerId) {
+        model.addAttribute("customerId", customerId);
+        return "/business/customer/team";
+    }
 
     /**
      * 合成推广海报
@@ -246,6 +267,22 @@ public class CustomerController implements Serializable {
             ResultVo resultVo = ResultVoUtil.success();
             resultVo.setData(picBase64);
             return resultVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultEnum.SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 充值提交接口
+     */
+    @RequestMapping("/money")
+    @RequiresPermissions("business:customer:toMoney")
+    @ResponseBody
+    public ResultVo money(@Validated CustomerMoneyValid valid, @EntityParam CustomerMoneyVO customerMoneyVO) {
+        try {
+            customerService.payMoney(customerMoneyVO.getCustomerId(),customerMoneyVO.getMoney());
+            return ResultVoUtil.success("充值成功");
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResultException(ResultEnum.SERVER_ERROR);

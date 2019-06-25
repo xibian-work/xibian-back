@@ -14,22 +14,26 @@ import java.util.Date;
  * @date 2018/8/14
  */
 @Entity
-@Table(name = "course")
+@Table(name = "reward_rule")
 @Getter
 @Setter
-public class Course implements Serializable {
+public class RewardRule implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
+    private String code;
     private String name;
-    private Double price;
-    private String remark;
-    private Byte status;
+    private Long courseId;
+    private Double money;
+    private Double percentage;
+    private Byte level;
     private Long updateBy;
     private Long createBy;
     @CreatedDate
     private Date createDate;
     @LastModifiedDate
     private Date updateDate;
-}
+    private Byte status;
 
+    private String remark;
+}

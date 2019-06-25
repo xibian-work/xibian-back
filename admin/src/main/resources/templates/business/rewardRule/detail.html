@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/chenwt/Admin_fast">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body>
+<div class="admin-detail-page">
+    <div class="admin-detail-title">基本信息</div>
+    <table class="layui-table admin-detail-table">
+        <tbody>
+        <tr>
+            <th width='100px'>奖励编号</th>
+            <td th:text="${rewardRule.id}"></td>
+            <th width='100px'>奖励编码</th>
+            <td th:text="${rewardRule.code}"></td>
+        </tr>
+
+        <tr>
+            <th>奖励名称</th>
+            <td th:text="${rewardRule.name}"></td>
+            <th>状态</th>
+            <td th:text="${#dicts.dataStatus(rewardRule.status)}"></td>
+        </tr>
+
+        <tr>
+            <th>奖励金额</th>
+            <td th:text="${rewardRule.money}"></td>
+            <th>奖励比例</th>
+            <td th:text="${rewardRule.percentage}"></td>
+        </tr>
+
+        <tr>
+            <th>创建者</th>
+            <td th:text="${rewardRule.createName}"></td>
+            <th>创建时间</th>
+            <td th:text="${#dates.format(rewardRule.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        <tr>
+            <th>备注</th>
+            <td th:text="${rewardRule.remark}" colspan="4"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<script th:replace="/common/template :: script"></script>
+</body>
+</html>
+

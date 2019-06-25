@@ -86,6 +86,14 @@ public interface CustomerService {
      * @param signVO
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     ResultVo sign(SignVO signVO);
+
+    /**
+     * 充值
+     * @param customerId
+     * @param money
+     */
+    @Transactional(rollbackFor = Exception.class)
+    void payMoney(Long customerId, Double money);
 }
