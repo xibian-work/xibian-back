@@ -4,6 +4,7 @@ import com.chenwt.admin.business.domain.entity.Customer;
 import com.chenwt.admin.business.domain.entity.CustomerMarketing;
 import com.chenwt.admin.business.domain.entity.CustomerTeam;
 import com.chenwt.admin.business.domain.projection.CustomerProjection;
+import com.chenwt.admin.business.domain.projection.TeamProjection;
 import com.chenwt.admin.business.domain.vo.SignVO;
 import com.chenwt.admin.business.enums.ConstantEnums;
 import com.chenwt.admin.business.repository.CustomerRepository;
@@ -147,6 +148,11 @@ public class CustomerServiceImpl implements CustomerService {
         //如果有推荐人，则按照奖励规则给予奖励
 
         //插入一条充值订单
+    }
+
+    @Override
+    public Page<TeamProjection> getTeamPageList(Long customerId, String teamName) {
+        return customerTeamService.getTeamPageList(customerId,teamName);
     }
 
 }

@@ -22,7 +22,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">用户名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="username" th:value="${param.name}" placeholder="请输入奖励名" autocomplete="off" class="layui-input">
+                        <input type="text" name="rewardRuleName" th:value="${param.rewardRuleName}" placeholder="请输入奖励名" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -33,7 +33,7 @@
             </div>
             <div class="pull-right screen-btn-group">
                 <div class="btn-group-right">
-                    <button class="layui-btn open-popup" data-title="添加客户" th:attr="data-url=@{/business/rewardRule/add}"  data-size="auto">
+                    <button class="layui-btn open-popup" data-title="添加奖励" th:attr="data-url=@{/business/rewardRule/add}"  data-size="auto">
                         <i class="fa fa-plus"></i> 添加</button>
                     <div class="btn-group">
                         <button class="layui-btn">操作<span class="caret"></span></button>

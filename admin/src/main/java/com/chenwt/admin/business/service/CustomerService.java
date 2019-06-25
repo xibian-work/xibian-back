@@ -2,6 +2,8 @@ package com.chenwt.admin.business.service;
 
 import com.chenwt.admin.business.domain.entity.Customer;
 import com.chenwt.admin.business.domain.projection.CustomerProjection;
+import com.chenwt.admin.business.domain.projection.RewardRuleProjection;
+import com.chenwt.admin.business.domain.projection.TeamProjection;
 import com.chenwt.admin.business.domain.vo.SignVO;
 import com.chenwt.common.enums.StatusEnum;
 import com.chenwt.common.vo.ResultVo;
@@ -96,4 +98,13 @@ public interface CustomerService {
      */
     @Transactional(rollbackFor = Exception.class)
     void payMoney(Long customerId, Double money);
+
+    /**
+     * 查看customerId下团队
+     *
+     * @param customerId
+     * @param teamName
+     * @return
+     */
+    Page<TeamProjection> getTeamPageList(Long customerId, String teamName);
 }

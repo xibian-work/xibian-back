@@ -3,9 +3,11 @@ package com.chenwt.admin.business.controller;
 import com.chenwt.admin.business.domain.entity.Customer;
 import com.chenwt.admin.business.domain.entity.PicTemplate;
 import com.chenwt.admin.business.domain.projection.CustomerProjection;
+import com.chenwt.admin.business.domain.projection.TeamProjection;
 import com.chenwt.admin.business.domain.vo.CustomerMoneyVO;
 import com.chenwt.admin.business.domain.vo.CustomerVO;
 import com.chenwt.admin.business.domain.vo.PicTemplateVO;
+import com.chenwt.admin.business.domain.vo.TeamVO;
 import com.chenwt.admin.business.service.CustomerService;
 import com.chenwt.admin.business.service.PicTemplateService;
 import com.chenwt.admin.business.validator.CustomerMoneyValid;
@@ -14,12 +16,13 @@ import com.chenwt.common.constant.StatusConst;
 import com.chenwt.common.enums.ResultEnum;
 import com.chenwt.common.enums.StatusEnum;
 import com.chenwt.common.exception.ResultException;
-import com.chenwt.common.utils.*;
+import com.chenwt.common.utils.EntityBeanUtil;
+import com.chenwt.common.utils.QRCodeUtil;
+import com.chenwt.common.utils.ResultVoUtil;
+import com.chenwt.common.utils.StatusUtil;
 import com.chenwt.common.vo.ResultVo;
 import com.chenwt.component.actionLog.annotation.EntityParam;
 import com.chenwt.component.excel.ExcelUtil;
-import com.chenwt.component.fileUpload.FileUpload;
-import com.chenwt.component.shiro.ShiroUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -29,7 +32,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Date;
@@ -247,8 +249,14 @@ public class CustomerController implements Serializable {
      */
     @GetMapping("/toTeam")
     @RequiresPermissions("business:customer:toTeam")
-    public String toTeam(Model model, @RequestParam(value = "ids") Long customerId) {
+    public String toTeam(Model model, @RequestParam(value = "ids") Long customerId, TeamVO teamVO) {
+        // 获取订单列表
+        Page<TeamProjection> list = customerService.getTeamPageList(customerId,teamVO.getTeamName());
+
+        // 封装数据
         model.addAttribute("customerId", customerId);
+        model.addAttribute("list", list.getContent());
+        model.addAttribute("page", list);
         return "/business/customer/team";
     }
 

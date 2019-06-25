@@ -43,7 +43,7 @@ public class RewardRuleController implements Serializable {
     @GetMapping("/index")
     @RequiresPermissions("business:rewardRule:index")
     public String index(Model model, RewardRuleVO rewardRuleVO) {
-        // 获取订单列表
+        // 获取奖励列表
         Page<RewardRuleProjection> list = rewardRuleService.getPageList(rewardRuleVO.getStatus(),rewardRuleVO.getRewardRuleName());
 
         // 封装数据

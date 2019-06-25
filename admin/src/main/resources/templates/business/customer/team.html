@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:mo="https://gitee.com/chenwt/Admin_fast">
+<head th:replace="/common/template :: header(~{::title},~{::link},~{::style})">
+</head>
+<body class="admin-layout-page">
+    <div class="layui-card">
+    <div class="layui-card-body">
+        <div class="layui-row admin-card-screen put-row">
+            <div class="pull-left layui-form-pane admin-search-box">
+                <input type="hidden" name="customerId" th:value="${customerId}"/>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">团员名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="teamName" th:value="${param.teamName}" placeholder="请输入团员名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn admin-search-btn">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="admin-table-wrap">
+            <table class="layui-table admin-table">
+                <thead>
+                <tr>
+                    <th class="admin-table-checkbox">
+                        <label class="admin-checkbox"><input type="checkbox">
+                            <i class="layui-icon layui-icon-ok"></i></label>
+                    </th>
+                    <th class="sortable" data-field="teamName">团员名</th>
+                    <th class="sortable" data-field="teamPhone">团员手机</th>
+                    <th class="sortable" data-field="createDate">创建时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item:${list}">
+                    <td><label class="admin-checkbox"><input type="checkbox" th:value="${item.id}">
+                        <i class="layui-icon layui-icon-ok"></i></label></td>
+                    <td th:text="${item.teamName}">团员名</td>
+                    <td th:text="${item.teamPhone}">团员手机</td>
+                    <td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm:ss')}">创建时间</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:replace="/common/fragment :: page"></div>
+    </div>
+</div>
+
+    <script th:replace="/common/template :: script"></script>
+
+</body>
+</html>
