@@ -34,4 +34,12 @@ public interface CustomerTeamRepository extends JpaRepository<CustomerTeam, Long
             "where t2.id = :customerId " +
             "and if(:teamName is NULL,1=1,t3.username LIKE CONCAT('%', :teamName,'%')) ", nativeQuery = true)
     Page<TeamProjection> getTeamPageList(@Param("customerId") Long customerId, @Param("teamName") String teamName, Pageable page);
+
+    /***
+     * 查找
+     * @param customerId
+     * @return
+     */
+    CustomerTeam findByCustomerId(Long customerId);
+
 }

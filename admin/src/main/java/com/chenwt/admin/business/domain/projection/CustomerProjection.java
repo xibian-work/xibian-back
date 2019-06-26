@@ -34,4 +34,7 @@ public interface CustomerProjection {
     String getRemark();
 
     Byte getStatus();
+
+    Integer getTeamCount();
+    Double getMoney();
 }

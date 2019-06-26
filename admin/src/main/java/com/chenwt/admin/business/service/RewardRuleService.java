@@ -43,4 +43,11 @@ public interface RewardRuleService {
      */
     @Transactional
     Boolean updateStatus(StatusEnum statusEnum, List<Long> ids);
+
+    /**
+     * 查找
+     * @param code
+     * @return
+     */
+    RewardRule findByCode(String code);
 }

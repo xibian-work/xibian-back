@@ -22,4 +22,11 @@ public interface CustomerTeamService {
      * @return
      */
     Page<TeamProjection> getTeamPageList(Long customerId, String teamName);
+
+    /**
+     * 查找
+     * @param customerId
+     * @return
+     */
+    CustomerTeam findByCustomerId(Long customerId);
 }

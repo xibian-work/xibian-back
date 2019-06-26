@@ -19,8 +19,7 @@ public enum  ConstantEnums {
     /**
      * 客户营销类型
      */
-    CUSTOMER_MARKETING_1(1,"我要领课")
-
+    CUSTOMER_MARKETING_1(1,"我要领课"),
     ;
 
     private Integer key;

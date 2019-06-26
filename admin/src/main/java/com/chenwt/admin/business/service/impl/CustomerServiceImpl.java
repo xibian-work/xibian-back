@@ -1,22 +1,20 @@
 package com.chenwt.admin.business.service.impl;
 
-import com.chenwt.admin.business.domain.entity.Customer;
-import com.chenwt.admin.business.domain.entity.CustomerMarketing;
-import com.chenwt.admin.business.domain.entity.CustomerTeam;
+import com.chenwt.admin.business.constants.Constants;
+import com.chenwt.admin.business.domain.entity.*;
 import com.chenwt.admin.business.domain.projection.CustomerProjection;
 import com.chenwt.admin.business.domain.projection.TeamProjection;
 import com.chenwt.admin.business.domain.vo.SignVO;
 import com.chenwt.admin.business.enums.ConstantEnums;
 import com.chenwt.admin.business.repository.CustomerRepository;
-import com.chenwt.admin.business.service.CustomerMarketingService;
-import com.chenwt.admin.business.service.CustomerService;
-import com.chenwt.admin.business.service.CustomerTeamService;
-import com.chenwt.admin.business.service.StudentService;
+import com.chenwt.admin.business.service.*;
 import com.chenwt.common.constant.StatusConst;
 import com.chenwt.common.data.PageSort;
 import com.chenwt.common.enums.StatusEnum;
 import com.chenwt.common.utils.ResultVoUtil;
 import com.chenwt.common.vo.ResultVo;
+import com.chenwt.component.shiro.ShiroUtil;
+import com.chenwt.modules.system.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -46,6 +44,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Resource
     private CustomerMarketingService customerMarketingService;
+
+    @Resource
+    private CustomerAccountService customerAccountService;
+
+    @Resource
+    private RewardRuleService rewardRuleService;
 
     @Override
     public Page<CustomerProjection> getPageList(Byte status, String username){
@@ -142,13 +146,35 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void payMoney(Long customerId, Double money) {
-        //todo
+        User user = ShiroUtil.getSubject();
+        //先给该用户充值
+        customerAccountService.payMoneyToAccount(user.getId(), customerId, money);
+
         //查找其推荐人
+        CustomerTeam customerTeam = customerTeamService.findByCustomerId(customerId);
 
         //如果有推荐人，则按照奖励规则给予奖励
-
-        //插入一条充值订单
+        if (null != customerTeam){
+            //计算奖励金额
+            RewardRule rewardRule = rewardRuleService.findByCode(Constants.RewardRule.TEAM_REWARD);
+            if (null != rewardRule){
+                if (null != rewardRule.getMoney()){
+                    money = rewardRule.getMoney();
+                }else{
+                    if (null != rewardRule.getPercentage()){
+                        money = money * rewardRule.getPercentage() / 100;
+                    }else {
+                        money = 0d;
+                    }
+                }
+                if (0 < money){
+                    customerAccountService.payMoneyToAccount(user.getId(), customerTeam.getLeaderId(), money);
+                }
+            }
+        }
+        //插入一条充值订单(待用)
     }
+
 
     @Override
     public Page<TeamProjection> getTeamPageList(Long customerId, String teamName) {

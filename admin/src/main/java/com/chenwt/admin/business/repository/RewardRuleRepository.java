@@ -59,4 +59,11 @@ public interface RewardRuleRepository extends BaseRepository<RewardRule, Long>, 
             "LEFT JOIN sys_user u ON u.id = r.create_by " +
             "where r.id = :rewardRuleId",nativeQuery = true)
     RewardRuleProjection findByRewardRuleId(@Param("rewardRuleId") Long rewardRuleId);
+
+    /**
+     * 查找
+     * @param code
+     * @return
+     */
+    RewardRule findByCode(String code);
 }

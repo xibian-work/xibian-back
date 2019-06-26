@@ -67,6 +67,8 @@
                             <i class="layui-icon layui-icon-ok"></i></label>
                     </th>
                     <th class="sortable" data-field="username">用户名</th>
+                    <th class="sortable" data-field="money">金额</th>
+                    <th class="sortable" data-field="teamCount">团队</th>
                     <th class="sortable" data-field="sex">性别</th>
                     <th class="sortable" data-field="phone">电话</th>
                     <th class="sortable" data-field="email">邮箱</th>
@@ -80,6 +82,8 @@
                     <td><label class="admin-checkbox"><input type="checkbox" th:value="${item.id}">
                         <i class="layui-icon layui-icon-ok"></i></label></td>
                     <td th:text="${item.username}">用户名</td>
+                    <td th:text="${item.money}">金额</td>
+                    <td th:text="${item.teamCount}">团队</td>
                     <td th:text="${#dicts.keyValue('USER_SEX', item.sex)}">性别</td>
                     <td th:text="${item.phone}">电话</td>
                     <td th:text="${item.email}">邮箱</td>

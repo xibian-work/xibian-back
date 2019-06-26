@@ -35,4 +35,9 @@ public class CustomerTeamServiceImpl implements CustomerTeamService {
         Pageable page = PageSort.nativePageRequest(Sort.Direction.ASC);
         return customerTeamRepository.getTeamPageList(customerId,teamName,page);
     }
+
+    @Override
+    public CustomerTeam findByCustomerId(Long customerId) {
+        return customerTeamRepository.findByCustomerId(customerId);
+    }
 }

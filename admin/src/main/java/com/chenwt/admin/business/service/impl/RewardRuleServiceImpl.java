@@ -65,4 +65,9 @@ public class RewardRuleServiceImpl implements RewardRuleService {
     public Boolean updateStatus(StatusEnum statusEnum, List<Long> ids) {
         return rewardRuleRepository.updateStatus(statusEnum.getCode(), ids) > 0;
     }
+
+    @Override
+    public RewardRule findByCode(String code) {
+        return rewardRuleRepository.findByCode(code);
+    }
 }
