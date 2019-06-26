@@ -32,7 +32,14 @@ public interface CustomerTeamRepository extends JpaRepository<CustomerTeam, Long
             "LEFT JOIN customer t2 on t1.leader_id = t2.id " +
             "LEFT JOIN customer t3 on t1.customer_id = t3.id " +
             "where t2.id = :customerId " +
-            "and if(:teamName is NULL,1=1,t3.username LIKE CONCAT('%', :teamName,'%')) ", nativeQuery = true)
+            "and if(:teamName is NULL,1=1,t3.username LIKE CONCAT('%', :teamName,'%')) "
+            ,countQuery = "SELECT COUNT(1)" +
+            "FROM customer_team t1 " +
+            "LEFT JOIN customer t2 on t1.leader_id = t2.id " +
+            "LEFT JOIN customer t3 on t1.customer_id = t3.id " +
+            "where t2.id = :customerId " +
+            "and if(:teamName is NULL,1=1,t3.username LIKE CONCAT('%', :teamName,'%')) "
+            , nativeQuery = true)
     Page<TeamProjection> getTeamPageList(@Param("customerId") Long customerId, @Param("teamName") String teamName, Pageable page);
 
     /***

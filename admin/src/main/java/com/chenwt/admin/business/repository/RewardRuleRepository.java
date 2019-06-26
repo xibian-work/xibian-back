@@ -35,7 +35,14 @@ public interface RewardRuleRepository extends BaseRepository<RewardRule, Long>, 
             "ON r.course_id = c.id " +
             "where r.status != 3 " +
             "and if(:status is NULL,1=1,r.status = :status) " +
-            "and if(:rewardRuleName is NULL,1=1,r.name LIKE CONCAT('%', :rewardRuleName,'%')) ",nativeQuery = true)
+            "and if(:rewardRuleName is NULL,1=1,r.name LIKE CONCAT('%', :rewardRuleName,'%')) "
+            ,countQuery = "SELECT COUNT(1) FROM reward_rule r " +
+            "LEFT JOIN course c " +
+            "ON r.course_id = c.id " +
+            "where r.status != 3 " +
+            "and if(:status is NULL,1=1,r.status = :status) " +
+            "and if(:rewardRuleName is NULL,1=1,r.name LIKE CONCAT('%', :rewardRuleName,'%')) "
+            ,nativeQuery = true)
     Page<RewardRuleProjection> getPageList(@Param("status") Byte status, @Param("rewardRuleName") String rewardRuleName, Pageable page);
 
     /**

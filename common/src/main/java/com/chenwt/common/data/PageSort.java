@@ -48,6 +48,22 @@ public class PageSort {
         return pageRequest(pageSizeDef, nativeOrderByColumnDef, sortDirection);
     }
 
+    /**
+     * 创建分页排序对象
+     */
+    public static PageRequest noSortPageRequest(){
+        return pageRequest(pageSizeDef);
+    }
+
+    /**
+     * 创建分页排序对象
+     * @param pageSizeDef 分页数据数量默认值
+     */
+    public static PageRequest pageRequest(Integer pageSizeDef){
+        Integer pageIndex = HttpServletUtil.getParameterInt("page", 1);
+        Integer pageSize = HttpServletUtil.getParameterInt("size", pageSizeDef);
+        return PageRequest.of(pageIndex-1, pageSize);
+    }
 
     /**
      * 创建分页排序对象

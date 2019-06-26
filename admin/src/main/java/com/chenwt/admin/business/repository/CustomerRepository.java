@@ -25,14 +25,23 @@ public interface CustomerRepository extends BaseRepository<Customer, Long>, JpaS
      */
     @Query(value = "SELECT c.id, " +
             "c.username, " +
+            "a.money, " +
+            "(SELECT COUNT(1) from customer_team WHERE leader_id = c.id) as teamCount, " +
             "c.phone, " +
             "c.email, " +
             "c.sex, " +
             "c.create_date AS createDate, " +
             "c.STATUS  FROM customer c " +
+            "LEFT JOIN customer_account a on a.customer_id = c.id " +
             "where c.status != 3 " +
             "and if(:status is NULL,1=1,c.status = :status) " +
-            "and if(:username is NULL,1=1,c.username LIKE CONCAT('%', :username,'%')) ",nativeQuery = true)
+            "and if(:username is NULL,1=1,c.username LIKE CONCAT('%', :username,'%')) "
+            ,countQuery = "SELECT COUNT(1) FROM customer c " +
+            "where c.status != 3 " +
+            "and if(:status is NULL,1=1,c.status = :status) " +
+            "and if(:username is NULL,1=1,c.username LIKE CONCAT('%', :username,'%')) " +
+            "order by c.create_date asc "
+            ,nativeQuery = true)
     Page<CustomerProjection> getPageList(@Param("status") Byte status, @Param("username") String username, Pageable page);
 
     /**
@@ -42,12 +51,16 @@ public interface CustomerRepository extends BaseRepository<Customer, Long>, JpaS
      */
     @Query(value = "SELECT c.id, " +
             "c.username, " +
+            "a.money, " +
+            "(SELECT COUNT(1) from customer_team t WHERE t.leader_id = c.id) as teamCount, " +
             "c.phone, " +
             "c.email, " +
             "c.sex, " +
             "c.create_date AS createDate, " +
             "c.STATUS  FROM customer c " +
-            "where c.id = :customerId ",nativeQuery = true)
+            "LEFT JOIN customer_account a on a.customer_id = c.id " +
+            "where c.id = :customerId "
+            ,nativeQuery = true)
     CustomerProjection findByCustomerId(@Param("customerId")Long customerId);
 
     /**

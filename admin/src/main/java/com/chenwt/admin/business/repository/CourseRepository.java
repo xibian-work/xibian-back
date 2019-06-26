@@ -41,6 +41,12 @@ public interface CourseRepository extends BaseRepository<Course, Long>, JpaSpeci
             "where 1=1 " +
             "and if(:status is NULL,1=1,t1.status = :status) " +
             "and if(:name is NULL,1=1,t1.name LIKE CONCAT('%', :name,'%')) "
+            , countQuery = "SELECT COUNT(1)" +
+            "from " +
+            "course t1 " +
+            "where 1=1 " +
+            "and if(:status is NULL,1=1,t1.status = :status) " +
+            "and if(:name is NULL,1=1,t1.name LIKE CONCAT('%', :name,'%')) "
             , nativeQuery = true)
     Page<CourseProjection> getPageList(@Param("status") Byte status, @Param("name") String name, Pageable page);
 
