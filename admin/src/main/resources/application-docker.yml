@@ -21,7 +21,7 @@ spring:
 ## 数据库配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/xibian?useSSL=false&characterEncoding=utf-8
+    url: jdbc:mysql://xibian-mysql:3306/xibian?useSSL=false&characterEncoding=utf-8
     username: xibian
     password: xibian123456
 

@@ -54,7 +54,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Page<CustomerProjection> getPageList(Byte status, String username){
         // 创建分页对象
-//        Pageable page = PageSort.noSortPageRequest();
         Pageable page = PageSort.nativePageRequest(Sort.Direction.ASC);
         return customerRepository.getPageList(status, username,page);
     }
