@@ -29,7 +29,8 @@ public interface CustomerRepository extends BaseRepository<Customer, Long>, JpaS
             "(SELECT COUNT(1) from customer_team WHERE leader_id = c.id) as teamCount, " +
             "c.phone, " +
             "c.email, " +
-            "c.sex, " +
+            "c.sex," +
+            "c.remark, " +
             "c.create_date AS createDate, " +
             "c.STATUS  FROM customer c " +
             "LEFT JOIN customer_account a on a.customer_id = c.id " +
@@ -57,6 +58,7 @@ public interface CustomerRepository extends BaseRepository<Customer, Long>, JpaS
             "c.email, " +
             "c.sex, " +
             "c.create_date AS createDate, " +
+            "c.remark, " +
             "c.STATUS  FROM customer c " +
             "LEFT JOIN customer_account a on a.customer_id = c.id " +
             "where c.id = :customerId "

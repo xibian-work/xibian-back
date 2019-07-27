@@ -49,5 +49,13 @@ public interface RewardRuleService {
      * @param code
      * @return
      */
-    RewardRule findByCode(String code);
+    List<RewardRule> findByCode(String code);
+
+    /**
+     * 查找
+     * @param code
+     * @param level
+     * @return
+     */
+    RewardRule findByCodeAndLevel(String code,Integer level);
 }

@@ -54,10 +54,12 @@
                         <label class="admin-checkbox"><input type="checkbox">
                             <i class="layui-icon layui-icon-ok"></i></label>
                     </th>
+                    <th class="sortable" data-field="id">奖励编号</th>
                     <th class="sortable" data-field="code">奖励编码</th>
                     <th class="sortable" data-field="name">奖励名称</th>
                     <th class="sortable" data-field="money">奖励金额</th>
-                    <th class="sortable" data-field="percentage">奖励比例</th>
+                    <th class="sortable" data-field="percentage">奖励比例(%)</th>
+                    <th class="sortable" data-field="level">层级</th>
                     <th class="sortable" data-field="createDate">创建时间</th>
                     <th class="sortable" data-field="remark">备注</th>
                     <th>状态</th>
@@ -68,10 +70,12 @@
                 <tr th:each="item:${list}">
                     <td><label class="admin-checkbox"><input type="checkbox" th:value="${item.id}">
                         <i class="layui-icon layui-icon-ok"></i></label></td>
+                    <td th:text="${item.id}">奖励编号</td>
                     <td th:text="${item.code}">奖励编码</td>
                     <td th:text="${item.name}">奖励名称</td>
                     <td th:text="${item.money}">奖励金额</td>
                     <td th:text="${item.percentage}">奖励比例</td>
+                    <td th:text="${item.level}">层级</td>
                     <td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd HH:mm:ss')}">创建时间</td>
                     <td th:text="${item.remark}">备注</td>
                     <td th:text="${#dicts.dataStatus(item.status)}">状态</td>

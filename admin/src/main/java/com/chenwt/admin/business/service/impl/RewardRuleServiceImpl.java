@@ -67,7 +67,12 @@ public class RewardRuleServiceImpl implements RewardRuleService {
     }
 
     @Override
-    public RewardRule findByCode(String code) {
+    public List<RewardRule> findByCode(String code) {
         return rewardRuleRepository.findByCode(code);
+    }
+
+    @Override
+    public RewardRule findByCodeAndLevel(String code, Integer level) {
+        return rewardRuleRepository.findByCodeAndLevel(code,level);
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * @author chenwt
  * @date 2018/8/14
@@ -72,5 +74,13 @@ public interface RewardRuleRepository extends BaseRepository<RewardRule, Long>, 
      * @param code
      * @return
      */
-    RewardRule findByCode(String code);
+    List<RewardRule> findByCode(String code);
+
+    /**
+     * 查找
+     * @param code
+     * @param level
+     * @return
+     */
+    RewardRule findByCodeAndLevel(String code, Integer level);
 }
