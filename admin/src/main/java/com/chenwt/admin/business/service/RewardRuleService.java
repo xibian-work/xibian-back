@@ -57,5 +57,5 @@ public interface RewardRuleService {
      * @param level
      * @return
      */
-    RewardRule findByCodeAndLevel(String code,Integer level);
+    RewardRule findByCodeAndLevel(String code,Byte level);
 }

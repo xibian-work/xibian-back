@@ -1,7 +1,10 @@
 package com.chenwt;
 
+import com.chenwt.admin.business.constants.Constants;
 import com.chenwt.admin.business.domain.entity.CustomerTeam;
+import com.chenwt.admin.business.domain.entity.RewardRule;
 import com.chenwt.admin.business.service.CustomerTeamService;
+import com.chenwt.admin.business.service.RewardRuleService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -21,14 +24,15 @@ public class Test01 extends BaseTest {
 
     @Resource
     private CustomerTeamService customerTeamService;
+    @Resource
+    private RewardRuleService rewardRuleService;
 
     @Test
     public void test01(){
         // 创建分页对象
         //查找其推荐人
-        CustomerTeam customerTeam = customerTeamService.findByCustomerId(6L);
-        CustomerTeam customerTeam1 = customerTeamService.findByCustomerId(1L);
-
+        RewardRule rewardRule = rewardRuleService.findByCodeAndLevel(Constants.RewardRule.TEAM_REWARD,Constants.RewardRule.LEVEL_1);
+        rewardRule = rewardRuleService.findByCodeAndLevel(Constants.RewardRule.TEAM_REWARD,Constants.RewardRule.LEVEL_2);
         System.out.println(keUrl+"?customerId=");
     }
 }

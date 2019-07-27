@@ -82,5 +82,5 @@ public interface RewardRuleRepository extends BaseRepository<RewardRule, Long>, 
      * @param level
      * @return
      */
-    RewardRule findByCodeAndLevel(String code, Integer level);
+    RewardRule findByCodeAndLevel(String code, Byte level);
 }

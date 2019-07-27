@@ -16,8 +16,8 @@ public interface Constants {
          * 我的团队推广
          */
         String TEAM_REWARD = "TEAM_REWARD";
-        Integer LEVEL_1 = 1;
-        Integer LEVEL_2 = 2;
+        Byte LEVEL_1 = 1;
+        Byte LEVEL_2 = 2;
 
     }
 }

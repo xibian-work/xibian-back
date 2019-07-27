@@ -159,17 +159,21 @@ public class CustomerServiceImpl implements CustomerService {
 
         //查找其推荐人
         CustomerTeam directCustomerTeam = customerTeamService.findByCustomerId(customerId);
-        //计算奖励金额规则
-        RewardRule rewardRule = rewardRuleService.findByCodeAndLevel(Constants.RewardRule.TEAM_REWARD,Constants.RewardRule.LEVEL_1);
-        if (null != directCustomerTeam && null != rewardRule){
-            //一级奖励规则成立
-            payRewardMoney(user.getId(),accountLog.getId(),directCustomerTeam.getLeaderId(), money,rewardRule);
+        if (null != directCustomerTeam){
+            //计算奖励金额规则
+            RewardRule rewardRule = rewardRuleService.findByCodeAndLevel(Constants.RewardRule.TEAM_REWARD,Constants.RewardRule.LEVEL_1);
+            if ( null != rewardRule){
+                //一级奖励规则成立
+                payRewardMoney(user.getId(),accountLog.getId(),directCustomerTeam.getLeaderId(), money,rewardRule);
 
-            CustomerTeam inDirectCustomerTeam = customerTeamService.findByCustomerId(directCustomerTeam.getLeaderId());
-            rewardRule = rewardRuleService.findByCodeAndLevel(Constants.RewardRule.TEAM_REWARD,Constants.RewardRule.LEVEL_2);
-            if (null != inDirectCustomerTeam && null != rewardRule){
-                //二级奖励规则成立
-                payRewardMoney(user.getId(),accountLog.getId(),inDirectCustomerTeam.getLeaderId(), money,rewardRule);
+                CustomerTeam inDirectCustomerTeam = customerTeamService.findByCustomerId(directCustomerTeam.getLeaderId());
+                if (null != inDirectCustomerTeam){
+                    rewardRule = rewardRuleService.findByCodeAndLevel(Constants.RewardRule.TEAM_REWARD,Constants.RewardRule.LEVEL_2);
+                    if (null != rewardRule){
+                        //二级奖励规则成立
+                        payRewardMoney(user.getId(),accountLog.getId(),inDirectCustomerTeam.getLeaderId(), money,rewardRule);
+                    }
+                }
             }
         }
         //插入一条充值订单(待用)
